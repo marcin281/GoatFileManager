@@ -10,7 +10,11 @@ FileManager::FileManager()
     directorypath = getenv("HOME");
 }
 
-void FileManager::show_files() const {
+bool FileManager::show_files() const {
+    if (!fs::exists(directorypath)) {
+        cout << "Directory does not exist\n";
+        return false;
+    }
     cout<<directorypath<<endl;
     for (const auto& entry :
          fs::directory_iterator(directorypath)) {
@@ -18,61 +22,101 @@ void FileManager::show_files() const {
         else {cout<<"File ";}
         cout << entry.path().filename() << endl;
          }
+    return true;
 }
 
-void FileManager::open_directory() {
-    string dir;
+bool FileManager::open_directory(const std::string & name) {
     string command;
-    cin>>dir;
-    if (const fs::path checkpath = directorypath / dir; fs::exists(checkpath)) {
-        if (fs::is_directory(checkpath)) {directorypath = directorypath / dir;}
+    if (const fs::path checkpath = directorypath / name; fs::exists(checkpath)) {
+        if (fs::is_directory(checkpath)) {directorypath = directorypath / name;}
         else {
-            command="nano " + checkpath.string();
+            command = "nano \"" + checkpath.string() + "\"";
             system(command.c_str());
+            return true;
         }
 
     }
     else{cout<<"Directory not found"<<endl;}
+    return false;
 }
 
-void FileManager::make_directory() const {
-    string dir;
-    cin>>dir;
-    fs::create_directory(directorypath / dir);
-    cout<<"made "<<dir<<" directory"<<endl;
+bool FileManager::make_directory(const string& name) const {
+    try {
+        fs::create_directory(directorypath / name);
+        return true;
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        cout << e.what() << endl;
+        return false;
+    }
 }
-void FileManager::delete_file() const {
-    string dir;
-    char choice;
-    cin>>dir;
-    cout<<"Delete "<<dir<<"? y/N"<<endl;
-    cin>>choice;
-    if (choice == 'y') {fs::remove_all(directorypath / dir);}
+bool FileManager::delete_file(const string& name) const
+{
+    try {
+        fs::remove_all(directorypath / name);
+        return true;
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        cout << e.what() << endl;
+        return false;
+    }
 }
-void FileManager::copy() const {
-    string dir1, dir2;
-    cin>>dir1;
-    cin>>dir2;
-    fs::copy(directorypath/dir1, directorypath/dir2, fs::copy_options::recursive);
+bool FileManager::copy(const string& name, const string& name2) const
+{
+    try {
+        fs::copy_file(
+            directorypath / name,
+            directorypath / name2
+        );
+        return true;
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        cout << e.what() << endl;
+        return false;
+    }
 }
-void FileManager::copy_folder() const {
-    string dir1, dir2;
-    cin>>dir1;
-    cin>>dir2;
-    fs::copy(directorypath/dir1, directorypath/dir2/dir1, fs::copy_options::recursive);
+bool FileManager::copy_folder(const string& name, const string& name2) const
+{
+    try {
+        fs::copy(
+            directorypath / name,
+            directorypath / name2 / name,
+            fs::copy_options::recursive
+        );
+        return true;
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        cout << e.what() << endl;
+        return false;
+    }
 }
-void FileManager::rename() const {
-    string dir,dir2;
-    cin>>dir;
-    cin>>dir2;
-    fs::rename(directorypath/dir, directorypath/dir2);
+bool FileManager::rename(const std::string & name, const std::string & name2) const {
+    try {
+        fs::rename(directorypath/name, directorypath/name2);
+        return true;
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        cout << e.what() << endl;
+        return false;
+    }
 }
-void FileManager::move() const {
-    string dir,dir2;
-    cin>>dir;
-    cin>>dir2;
-    fs::rename(directorypath/dir, directorypath/dir2/dir);
+bool FileManager::move(const std::string & name, const std::string & name2) const {
+    try {
+        fs::rename(directorypath/name, directorypath/name2/name);
+        return true;
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        cout << e.what() << endl;
+        return false;
+    }
 }
-void FileManager::back() {
+bool FileManager::back() {
     directorypath = directorypath.parent_path();
+    return true;
 }

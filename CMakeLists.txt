@@ -9,4 +9,6 @@ add_executable(FileManager
         main.cpp
         FileManager.cpp
         FileManager.h
+        log.cpp
+        log.h
 )

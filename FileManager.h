@@ -10,15 +10,15 @@ private:
 public:
     FileManager();
 
-    void show_files() const;
-    void open_directory();
-    void make_directory() const;
-    void delete_file() const;
-    void copy() const;
-    void copy_folder() const;
-    void rename() const;
-    void move() const;
-    void back();
+    bool show_files() const;
+    bool open_directory(const std::string & name);
+    bool make_directory(const std::string & name) const;
+    bool delete_file(const std::string & name) const;
+    bool copy(const std::string & name, const std::string & name2) const;
+    bool copy_folder(const std::string & name, const std::string & name2) const;
+    bool rename(const std::string & name, const std::string & name2) const;
+    bool move(const std::string & name, const std::string & name2) const;
+    bool back();
 };
 
 #endif
