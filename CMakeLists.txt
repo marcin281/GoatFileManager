@@ -7,4 +7,6 @@ include_directories(.)
 
 add_executable(FileManager
         main.cpp
-        main.h)
+        FileManager.cpp
+        FileManager.h
+)
