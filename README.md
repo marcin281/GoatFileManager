@@ -51,7 +51,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/marcin281/GoatFileManager.git
-cd goat
+cd GoatFileManager
 ```
 
 Compile the project with:
