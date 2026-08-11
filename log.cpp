@@ -14,8 +14,8 @@ log::log() {
     logfile = fs::path(getenv("HOME")) / ".config/goat/log.txt";
     fs::create_directories(logfile.parent_path());
 }
-void log::add(const std::string& message) const {
-    if (ofstream file(logfile, std::ios::app); file.is_open()) {
-        file << message << std::endl;
+void log::add(const string& message) const {
+    if (ofstream file(logfile, ios::app); file.is_open()) {
+        file << message << endl;
     }
 }
