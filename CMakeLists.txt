@@ -3,7 +3,7 @@ project(FileManager)
 
 set(CMAKE_CXX_STANDARD 20)
 
-include_directories(.)
+find_package(Curses REQUIRED)
 
 add_executable(FileManager
         main.cpp
@@ -11,4 +11,9 @@ add_executable(FileManager
         FileManager.h
         log.cpp
         log.h
+        ncurses.cpp
+        ncurses.h
 )
+
+target_include_directories(FileManager PRIVATE ${CURSES_INCLUDE_DIR})
+target_link_libraries(FileManager PRIVATE ${CURSES_LIBRARIES})
