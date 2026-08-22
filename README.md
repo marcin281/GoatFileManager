@@ -45,6 +45,12 @@ sudo apt install gcc-c++ nano
 sudo pacman install gcc-c++ nano
 ```
 
+### Gentoo
+
+```bash
+sudo emerge --ask sys-devel/gcc app-editors/nano
+```
+
 ## Building
 
 Clone the repository:
