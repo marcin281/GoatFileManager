@@ -1,6 +1,7 @@
 #include "FileManager.h"
 #include <iostream>
 #include <cstdlib>
+#include <vector>
 
 namespace fs = std::filesystem;
 using namespace std;
@@ -24,20 +25,26 @@ bool FileManager::show_files() const {
          }
     return true;
 }
+[[nodiscard]] vector<fs::directory_entry> FileManager::get_files() const {
+    vector<fs::directory_entry> files;
+    for (const auto& entry :
+        fs::directory_iterator(directorypath)) {
+        files.push_back(entry);
+    }
+    return files;
+}
 
-bool FileManager::open_directory(const std::string & name) {
+void FileManager::open_directory(const std::string & name) {
     string command;
     if (const fs::path checkpath = directorypath / name; fs::exists(checkpath)) {
         if (fs::is_directory(checkpath)) {directorypath = directorypath / name;}
         else {
-            command = "nano \"" + checkpath.string() + "\"";
+            command = "konsole -e nano \"" + checkpath.string() + "\"";
             system(command.c_str());
-            return true;
         }
 
     }
     else{cout<<"Directory not found"<<endl;}
-    return false;
 }
 
 bool FileManager::make_directory(const string& name) const {

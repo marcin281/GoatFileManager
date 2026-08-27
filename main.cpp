@@ -16,7 +16,7 @@ fs::path directorypath = getenv("HOME");;
 int main() {
     FileManager fm;
 
-    ncurses_start(directorypath);
+    ncurses_start();
 
     return 0;
 }

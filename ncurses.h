@@ -3,6 +3,6 @@
 
 #include <filesystem>
 
-void ncurses_start(std::filesystem::path folder_path);
+void ncurses_start();
 
 #endif
