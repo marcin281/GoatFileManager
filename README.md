@@ -26,29 +26,30 @@ Before running Goat File Manager, make sure you have:
 * A C++ compiler such as **g++**
 * **nano** — required for opening files from the file manager
 * A **Linux/Unix-like operating system**
+* A **Konsole** console
 
 The program uses the `$HOME` environment variable to determine the starting directory and the location of the log file.
 
 ### Fedora
 
 ```bash
-sudo dnf install gcc-c++ nano
+sudo dnf install gcc-c++ nano konsole
 ```
 ### Debian like
 
 ```bash
-sudo apt install gcc-c++ nano
+sudo apt install gcc-c++ nano konsole
 ```
 ### Arch
 
 ```bash
-sudo pacman install gcc-c++ nano
+sudo pacman install gcc-c++ nano konsole
 ```
 
 ### Gentoo
 
 ```bash
-sudo emerge --ask sys-devel/gcc app-editors/nano
+sudo emerge --ask sys-devel/gcc app-editors/nano kde-apps/konsole
 ```
 
 ## Building
@@ -63,7 +64,7 @@ cd GoatFileManager
 Compile the project with:
 
 ```bash
-g++ main.cpp FileManager.cpp log.cpp -o goat
+g++ main.cpp FileManager.cpp log.cpp ncurses.cpp -o goat -lnotcurses -lnotcurses-core
 ```
 
 Run the program:
@@ -72,7 +73,7 @@ Run the program:
 ./goat
 ```
 
-## Usage
+## Usage **EDIT: NOT WORKING WAIT FOR UPDATE**
 
 After starting the program, you will see the main menu:
 
