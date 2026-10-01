@@ -1,6 +1,8 @@
 #include <notcurses/notcurses.h>
 #include <string>
 #include <filesystem>
+#include <iostream>
+
 #include "FileManager.h"
 using namespace std;
 namespace fs=std::filesystem;
@@ -37,11 +39,22 @@ void open(FileManager& fm, int selected) {
         );
     }
 }
+
+void back(FileManager& fm) {
+    fm.back();
+}
+
 void clear(ncplane* p,
            int& selected,
            int& scroll) {
     scroll=0, selected=0;
     ncplane_erase(p);
+}
+
+void draw_info(ncplane* p,
+    int& selected,
+    FileManager& fm) {
+    
 }
 
 void ncurses_start() {
@@ -150,6 +163,15 @@ void ncurses_start() {
         if (notcurses_get(nc, nullptr, &ni) == 0)
             continue;
 
+        if (ni.id == NCKEY_ESC) {
+            back(fm);
+            clear(left, selected, scroll);
+
+            draw_list(left, fm, selected, normal, sel, scroll, max_visible);
+            notcurses_render(nc);
+            continue;
+        }
+
         if (ni.evtype == NCTYPE_PRESS ||
     ni.evtype == NCTYPE_REPEAT ||
     ni.evtype == NCTYPE_UNKNOWN) {
@@ -174,10 +196,15 @@ void ncurses_start() {
                 open(fm, selected);
                 clear(left, selected, scroll);
             }
+            else if (ni.id == NCKEY_BACKSPACE  && ni.evtype == NCTYPE_PRESS) {
+                back(fm);
+                clear(left, selected, scroll);
+            }
 
             draw_list(left, fm, selected, normal, sel, scroll, max_visible);
             notcurses_render(nc);
     }
+
         if (ni.id == 'q' || ni.id == 'Q')
             break;
     }
